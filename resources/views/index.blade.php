@@ -12,15 +12,15 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-1.3.min.js') }}" defer></script>
-    <script src="{{ asset('js/coda.js') }}" defer></script>
+    <script src="{{ asset('js/coda.js?1.0') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css?v1.2.1') }}" rel="stylesheet">
-    <link href="{{ asset('css/master.css?v1.2.1') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css?v1.2.2') }}" rel="stylesheet">
+    <link href="{{ asset('css/master.css?v1.2.2') }}" rel="stylesheet">
 
     <meta name="description" content="{{$pageDescription}}">
     <link type="image/x-icon" rel="shortcut icon" href="img/logo.ico">
@@ -42,6 +42,7 @@
         var listEvents = @json($listEvents);
         var yearCalendar = {{$yearCalendar}};
         var monthCalendar = {{$monthCalendar}};
+        var messagesLog = @json($messagesLog);
 
     </script>
 </head>

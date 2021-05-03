@@ -47,6 +47,33 @@ class IndexController extends Controller
         $pageDescription = "Танго календарь,  Танго фестивали в Украине,
         милонги в Киеве и других городах Украины, танго семинары, расписания танго школ.";
 
+        // кеш событий
+        $DataEvents = session('DataEvents');
+        $calendarList = session('DataCalendars');
+
+        // обновление раз в час
+        $dateTime = \Date('Y-m-d H:i');
+        $setDate = new \DateTime($dateTime);
+
+        $TimeDataEvents = session('SetTimeDataEvents');
+        $setTimeEvents = new \DateTime($TimeDataEvents);
+        $setTimeEvents->modify('+1 hour');
+
+        $messagesLog[] = "текущее время $dateTime время установки событий в сессии $TimeDataEvents";
+
+        if ($setTimeEvents <= $setDate) {
+            $messagesLog[] = 'удаляем данные о событиях из сессии';
+            unset($DataEvents);
+        }
+
+
+
+        if (empty($calendarList)) {
+            $messagesLog[] = "нет данных календарей в сессии";
+        } else {
+            $messagesLog[] = "берем данные календарей из сессии";
+        }
+
         $addCalendarId = session('addCalendarId');
         $selectCalendars = session('selectCalendars');
 
@@ -122,19 +149,24 @@ class IndexController extends Controller
             $city        = $item->city;
             $source      = $item->source;
 
-            // получаем метаданные календаря
-            $calendar = $service->calendars->get($gcalendarId);
-            $calendarName = $calendar->getSummary();
-            $calendarDescription = $calendar->getDescription();
+            if (empty($calendarList[$type_events][$city][$id])) {
+                // получаем метаданные календаря
+                $calendar = $service->calendars->get($gcalendarId);
+                $calendarName = $calendar->getSummary();
+                $calendarDescription = $calendar->getDescription();
 
-            // делаем массив для списка
-            $calendarList[$type_events][$city][$id] = [
-                'calendarName' => $calendarName,
-                'id'           => $id,
-                'gcalendarId'  => $gcalendarId,
-                'source'       => $source,
-                'description'  => $calendarDescription
-            ];
+                // делаем массив для списка
+                $calendarList[$type_events][$city][$id] = [
+                    'calendarName' => $calendarName,
+                    'id'           => $id,
+                    'gcalendarId'  => $gcalendarId,
+                    'source'       => $source,
+                    'description'  => $calendarDescription
+                ];
+            } else {
+                $calendarName = $calendarList[$type_events][$city][$id]['calendarName'];
+            }
+
 
 
             // добавляем календарь если есть в сессии вспышка
@@ -160,66 +192,78 @@ class IndexController extends Controller
             // заполняем событиями
             if (isset($selectCalendars[$id])) {
 
-                // add selected
-                $calendarList[$type_events][$city][$id]['select'] = 'checked';
-                $calendarList[$type_events][$city][$id]['class'] = 'active';
+                if (empty($DataEvents[$yearCalendar][$monthCalendar][$id])) {
+                    $messagesLog[] = "обновляем события календаря $calendarName";
+                    // add selected
+                    $calendarList[$type_events][$city][$id]['select'] = 'checked';
+                    $calendarList[$type_events][$city][$id]['class'] = 'active';
 
-                $events = $service->events->listEvents($gcalendarId, [
-                    'timeMin'      => $timeMin,
-                    'timeMax'      => $timeMax,
-                    'singleEvents' => true,
-                ]);
+                    $events = $service->events->listEvents($gcalendarId, [
+                        'timeMin'      => $timeMin,
+                        'timeMax'      => $timeMax,
+                        'singleEvents' => true,
+                    ]);
 
 
-                foreach ($events->getItems() as $event) {
-                    $eventId          = $event->getId();
-                    $eventName        = $event->getSummary();
-                    $eventDescription = $event->getDescription();
-                    $eventLocation    = $event->getLocation();
+                    foreach ($events->getItems() as $event) {
+                        $eventId          = $event->getId();
+                        $eventName        = $event->getSummary();
+                        $eventDescription = $event->getDescription();
+                        $eventLocation    = $event->getLocation();
 
-                    $eventDescLite = mb_substr($eventDescription, 0, 200);
+                        $eventDescLite = mb_substr($eventDescription, 0, 200);
 
-                    if (empty($eventDescription)) {
-                        $eventDescription = '';
+                        if (empty($eventDescription)) {
+                            $eventDescription = '';
+                        }
+
+                        if ($country != 'All') {
+                            $eventLocation = $country . '<br>' . $eventLocation;
+                        }
+
+
+                        $dateStartObj = $event->getStart();
+                        $dateStart    = $dateStartObj->getDateTime();
+                        $date         = new \DateTime($dateStart);
+                        $dateStart    = $date->format('Y-n-j');
+                        $timeStart    = $date->format('H-i');
+
+
+                        $dateEndtObj = $event->getEnd();
+                        $dateEnd     = $dateEndtObj->getDateTime();
+                        $date        = new \DateTime($dateEnd);
+                        $dateEnd     = $date->format('Y-n-j');
+                        $timeEnd     = $date->format('H-i');
+
+                        $lastModifed = $event->getUpdated();
+                        $date        = new \DateTime($lastModifed);
+                        $dateMod     = $date->format('Y-m-d H:i');
+
+
+                        $listEvents[$dateStart]["$id-$eventId"] = [
+                            'calendarId'  => $id,
+                            'eventId'     => $eventId,
+                            'name'        => $eventName,
+                            'description' => $eventDescLite,
+                            'location'    => $eventLocation,
+                            'dateStart'   => $dateStart,
+                            'timeStart'   => $timeStart,
+                            'dateEnd'     => $dateEnd,
+                            'timeEnd'     => $timeEnd,
+                            'update'      => $dateMod,
+                        ];
+
                     }
 
-                    if ($country != 'All') {
-                        $eventLocation = $country . '<br>' . $eventLocation;
-                    }
+                    // кеш событий
+                    $DataEvents[$yearCalendar][$monthCalendar][$id] = $listEvents;
+                    session(['DataEvents' => $DataEvents]);
+                    // записываем время установки данных в сессию
+                    session(['SetTimeDataEvents' => Date('Y-m-d H:i')]);
 
-
-                    $dateStartObj = $event->getStart();
-                    $dateStart    = $dateStartObj->getDateTime();
-                    $date         = new \DateTime($dateStart);
-                    $dateStart    = $date->format('Y-n-j');
-                    $timeStart    = $date->format('H-i');
-
-
-                    $dateEndtObj = $event->getEnd();
-                    $dateEnd     = $dateEndtObj->getDateTime();
-                    $date        = new \DateTime($dateEnd);
-                    $dateEnd     = $date->format('Y-n-j');
-                    $timeEnd     = $date->format('H-i');
-
-                    $lastModifed = $event->getUpdated();
-                    $date        = new \DateTime($lastModifed);
-                    $dateMod     = $date->format('Y-m-d H:i');
-
-
-                    $listEvents[$dateStart]["$id-$eventId"] = [
-                        'calendarId'  => $id,
-                        'eventId'     => $eventId,
-                        'name'        => $eventName,
-                        'description' => $eventDescLite,
-                        'location'    => $eventLocation,
-                        'dateStart'   => $dateStart,
-                        'timeStart'   => $timeStart,
-                        'dateEnd'     => $dateEnd,
-                        'timeEnd'     => $timeEnd,
-                        'update'      => $dateMod,
-                    ];
-
-
+                } else {
+                    $listEvents = $DataEvents[$yearCalendar][$monthCalendar][$id];
+                    $messagesLog[] = "берем события календаря $calendarName из сессии";
                 }
 
             } else {
@@ -229,12 +273,21 @@ class IndexController extends Controller
             }
 
         }
+
+        // кеш информации календарей
+        session(['DataCalendars' => $calendarList]);
+
+
         if (empty($listEvents)) {
             $listEvents = [];
         }
 
+
         $test = session('selectCalendars');
 //        var_dump($calendarEvents);
+
+        $messagesLog[] = 'backend finished';
+        $messagesLog[] = '----------------------------';
 
         return view('index', [
             'pageDescription' => $pageDescription,
@@ -243,6 +296,7 @@ class IndexController extends Controller
             'listEvents'      => $listEvents,
             'yearCalendar'    => $yearCalendar,
             'monthCalendar'   => $monthCalendar,
+            'messagesLog'     => $messagesLog,
         ]);
 
 

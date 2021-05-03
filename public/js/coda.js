@@ -1,5 +1,12 @@
 $(function () {
 
+    if (messagesLog) {
+        for (key in messagesLog) {
+            var message = messagesLog[key];
+            console.log(message);
+        }
+    }
+
     var jmon=['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
     var jdn=['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 
