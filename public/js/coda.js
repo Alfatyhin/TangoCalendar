@@ -220,6 +220,7 @@ function appendToCalendar() {
     });
 
 
+
     $('.calendar_list input.calendar_id').change(function () {
         var calendarId = $(this).val();
         $('.calendar_id_send').val(calendarId);

@@ -71,6 +71,9 @@
                                                {{$item['select']}}
                                         />
                                         <span>{{$item['calendarName']}} </span>
+                                        <div class="description">
+                                            {{$item['description']}}
+                                        </div>
                                     </label>
                                 </li>
                             @endforeach
@@ -85,6 +88,9 @@
                                                 {{$item['select']}}
                                             />
                                             <span>{{$item['calendarName']}} </span>
+                                            <div class="description">
+                                                {{$item['description']}}
+                                            </div>
                                         </label>
                                     </li>
                             @endforeach
@@ -108,6 +114,9 @@
                                                     {{$item['select']}}
                                                 />
                                                 <span>{{$item['calendarName']}} </span>
+                                                <div class="description">
+                                                    {{$item['description']}}
+                                                </div>
                                             </label>
                                         </li>
                                     @endforeach
@@ -132,6 +141,9 @@
                                                     {{$item['select']}}
                                                 />
                                                 <span>{{$item['calendarName']}} </span>
+                                                <div class="description">
+                                                    {{$item['description']}}
+                                                </div>
                                             </label>
                                         </li>
                                     @endforeach

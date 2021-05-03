@@ -7,7 +7,10 @@
 .calendar_list .caption {
     background: none;
 }
-.calendar_list .sub-menu li:first-child span {
+.calendar_list .sub-menu li > span {
+    color: #4e4d4d;
+    text-align: left;
+    padding-left: 10%;
 }
 .calendar_list span {
     text-align: center;
@@ -23,6 +26,7 @@
     margin-top: 0;
     max-height: 72vh;
     overflow-y: scroll;
+    overflow-x: visible;
     padding-right: 20px;
 }
 .calendar_list ul.calendars .sub-menu {
@@ -40,6 +44,32 @@
 }
 .calendar_list label {
     margin-left: 20px;
+    position: relative;
+    width: 90%;
+    display: inline-block;
+    padding: 5px 2px;
+    border-bottom: 2px solid #ddd;
+}
+.calendar_list .description {
+    display: none;
+}
+.calendar_list label:hover > .description {
+    display: block;
+    position: absolute;
+    top: 110%;
+    left: -16%;
+    background: #e0e0de;
+    width: 90%;
+    padding: 10px;
+    z-index: 110;
+    border: 1px solid #fff;
+    border-radius: 2px;
+    box-shadow: 3px 3px 6px #171616;
+    color: #000;
+    word-break: break-word;
+}
+.calendar_list label:hover {
+    cursor: pointer;
 }
 .calendar_list label span {
     display: inline;
