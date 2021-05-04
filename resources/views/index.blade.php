@@ -12,7 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-1.3.min.js') }}" defer></script>
-    <script src="{{ asset('js/coda.js?1.0') }}" defer></script>
+    <script src="{{ asset('js/coda.js?1.1') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -43,6 +43,7 @@
         var yearCalendar = {{$yearCalendar}};
         var monthCalendar = {{$monthCalendar}};
         var messagesLog = @json($messagesLog);
+        var DataEvents = @json($DataEvents);
 
     </script>
 </head>

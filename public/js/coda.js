@@ -10,7 +10,7 @@ $(function () {
     var jmon=['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
     var jdn=['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 
-    function CalendarOut(year, mon) {
+    function CalendarOut(year, mon, listEvents) {
 
         // текущая дата
         var adate=new Date();
@@ -119,6 +119,7 @@ $(function () {
     }
 
 function appendToCalendar() {
+
     for (key in listEvents) {
 
         if($('.date_' + key).hasClass('date_has_event')) {
@@ -227,9 +228,9 @@ function appendToCalendar() {
     });
 
 
-
     $('.calendar_list input.calendar_id').change(function () {
         var calendarId = $(this).val();
+
         $('.calendar_id_send').val(calendarId);
         $("#calendar_set").submit();
     })
@@ -312,5 +313,5 @@ function appendToCalendar() {
 
 
 
-    CalendarOut(yearCalendar, monthCalendar);
+    CalendarOut(yearCalendar, monthCalendar, listEvents);
 });

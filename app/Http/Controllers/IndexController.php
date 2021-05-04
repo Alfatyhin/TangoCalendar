@@ -262,6 +262,10 @@ class IndexController extends Controller
                     session(['SetTimeDataEvents' => Date('Y-m-d H:i')]);
 
                 } else {
+                    // add selected
+                    $calendarList[$type_events][$city][$id]['select'] = 'checked';
+                    $calendarList[$type_events][$city][$id]['class'] = 'active';
+
                     $listEvents = $DataEvents[$yearCalendar][$monthCalendar][$id];
                     $messagesLog[] = "берем события календаря $calendarName из сессии";
                 }
@@ -297,6 +301,7 @@ class IndexController extends Controller
             'yearCalendar'    => $yearCalendar,
             'monthCalendar'   => $monthCalendar,
             'messagesLog'     => $messagesLog,
+            'DataEvents'      => $DataEvents,
         ]);
 
 
