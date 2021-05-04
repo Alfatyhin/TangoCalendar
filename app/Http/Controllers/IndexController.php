@@ -11,33 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends Controller
 {
-    public function missingServiceAccountDetailsWarning()
-    {
-        $ret = "
-    <h3 class='warn'>
-      Warning: You need download your Service Account Credentials JSON from the
-      <a href='http://developers.google.com/console'>Google API console</a>.
-    </h3>
-    <p>
-      Once downloaded, move them into the root directory of this repository and
-      rename them 'service-account-credentials.json'.
-    </p>
-    <p>
-      In your application, you should set the GOOGLE_APPLICATION_CREDENTIALS environment variable
-      as the path to this file, but in the context of this example we will do this for you.
-    </p>";
-
-        return $ret;
-    }
-
-    public function checkServiceAccountCredentialsFile()
-    {
-        // service account creds
-        $application_creds = '../../gap/laravelTangoCalendar-09fd9ec20b64.json';
-
-        return file_exists($application_creds) ? $application_creds : false;
-    }
-
 
 
 
@@ -47,6 +20,8 @@ class IndexController extends Controller
         $pageDescription = "Танго календарь,  Танго фестивали в Украине,
         милонги в Киеве и других городах Украины, танго семинары, расписания танго школ.";
 
+        // обьявление массива событий
+        $listEvents = [];
         // кеш событий
         $DataEvents = session('DataEvents');
         $calendarList = session('DataCalendars');
@@ -106,28 +81,15 @@ class IndexController extends Controller
 
 
         $client = new \Google_Client();
-
-        /************************************************
-        ATTENTION: Fill in these values, or make sure you
-        have set the GOOGLE_APPLICATION_CREDENTIALS
-        environment variable. You can get these credentials
-        by creating a new Service Account in the
-        API console. Be sure to store the key file
-        somewhere you can get to it - though in real
-        operations you'd want to make sure it wasn't
-        accessible from the webserver!
-        Make sure the Books API is enabled on this
-        account as well, or the call will fail.
-         ************************************************/
-
-        if ($credentials_file = $this->checkServiceAccountCredentialsFile()) {
+        
+        if ($credentials_file = Gcalendar::checkServiceAccountCredentialsFile()) {
             // set the location manually
             $client->setAuthConfig($credentials_file);
         } elseif (getenv('GOOGLE_APPLICATION_CREDENTIALS')) {
             // use the application default credentials
             $client->useApplicationDefaultCredentials();
         } else {
-            echo $this->missingServiceAccountDetailsWarning();
+            echo Gcalendar::missingServiceAccountDetailsWarning();
             return;
         }
 
@@ -282,9 +244,9 @@ class IndexController extends Controller
         session(['DataCalendars' => $calendarList]);
 
 
-        if (empty($listEvents)) {
-            $listEvents = [];
-        }
+
+
+
 
 
         $test = session('selectCalendars');
