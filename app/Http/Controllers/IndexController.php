@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Gcalendar;
+use App\Models\GcalendarService;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -25,7 +26,8 @@ class IndexController extends Controller
         $DataEvents = session('DataEvents');
         $calendarList = session('DataCalendars');
 
-        // обновление раз в час
+        ////////////////////////////////////////////
+        // обновление данных о событиях раз в час
         $dateTime = \Date('Y-m-d H:i');
         $setDate = new \DateTime($dateTime);
 
@@ -39,18 +41,20 @@ class IndexController extends Controller
             $messagesLog[] = 'удаляем данные о событиях из сессии';
             unset($DataEvents);
         }
-
-
-
+        ///////////////////////////////////////////////
+        /// список календарей
         if (empty($calendarList)) {
-            $messagesLog[] = "нет данных календарей в сессии";
+            $messagesLog[] = "нет списка календарей в сессии";
         } else {
-            $messagesLog[] = "берем данные календарей из сессии";
+            $messagesLog[] = "берем список календарей из сессии";
         }
 
         $addCalendarId = session('addCalendarId');
         $selectCalendars = session('selectCalendars');
 
+
+
+        ////////////////////////////////////////////////////////
         // модификация даты старта календаря
         if (session()->has('setDate')) {
             $operator = session('setDate');
@@ -78,12 +82,15 @@ class IndexController extends Controller
         $monthCalendar = $calendarDateStart->format('n') - 1;
         session(['calendarStart' => $timeMin]);
 
+        /////////////////////////////////////////////////////
 
 
-        $service = Gcalendar::getService();
+        $service = GcalendarService::getService();
 
         //  получаем список календарей
         $calendars = Gcalendar::all();
+
+
 
         foreach ($calendars as $item) {
             $id          = $item->id;
@@ -225,14 +232,6 @@ class IndexController extends Controller
         // кеш информации календарей
         session(['DataCalendars' => $calendarList]);
 
-
-
-
-
-
-
-        $test = session('selectCalendars');
-//        var_dump($calendarEvents);
 
         $messagesLog[] = 'backend finished';
         $messagesLog[] = '----------------------------';
