@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Gcalendar;
 use App\Models\User;
-use Google_Service_Calendar;
 use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends Controller
