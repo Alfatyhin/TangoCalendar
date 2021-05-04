@@ -80,25 +80,8 @@ class IndexController extends Controller
         session(['calendarStart' => $timeMin]);
 
 
-        $client = new \Google_Client();
-        
-        if ($credentials_file = Gcalendar::checkServiceAccountCredentialsFile()) {
-            // set the location manually
-            $client->setAuthConfig($credentials_file);
-        } elseif (getenv('GOOGLE_APPLICATION_CREDENTIALS')) {
-            // use the application default credentials
-            $client->useApplicationDefaultCredentials();
-        } else {
-            echo Gcalendar::missingServiceAccountDetailsWarning();
-            return;
-        }
 
-
-        ////////////////////////
-        // инициализация сервиса
-        $client->setApplicationName("laravelTangoCalendar");
-        $client->setScopes(Google_Service_Calendar::CALENDAR);
-        $service = new Google_Service_Calendar($client);
+        $service = Gcalendar::getService();
 
         //  получаем список календарей
         $calendars = Gcalendar::all();

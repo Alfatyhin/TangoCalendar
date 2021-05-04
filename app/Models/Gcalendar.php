@@ -53,6 +53,31 @@ class Gcalendar extends Model
         return file_exists($application_creds) ? $application_creds : false;
     }
 
+    public static function getService()
+    {
+        $client = new \Google_Client();
+
+        if ($credentials_file = self::checkServiceAccountCredentialsFile()) {
+            // set the location manually
+            $client->setAuthConfig($credentials_file);
+        } elseif (getenv('GOOGLE_APPLICATION_CREDENTIALS')) {
+            // use the application default credentials
+            $client->useApplicationDefaultCredentials();
+        } else {
+            echo self::missingServiceAccountDetailsWarning();
+            return;
+        }
+
+
+        ////////////////////////
+        // инициализация сервиса
+        $client->setApplicationName("laravelTangoCalendar");
+        $client->setScopes(Google_Service_Calendar::CALENDAR);
+        $service = new Google_Service_Calendar($client);
+
+        return $service;
+    }
+
 
 
     public static function getCategory()
