@@ -22,6 +22,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+    <link href="{{ asset('css/preloader.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css?v1.2.2') }}" rel="stylesheet">
     <link href="{{ asset('css/master.css?v1.2.3') }}" rel="stylesheet">
 
@@ -51,6 +52,10 @@
 </head>
 
 <body>
+
+<div class="holder preloader_holder">
+    <div class="preloader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
 
 <div class="content">
 

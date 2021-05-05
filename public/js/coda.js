@@ -172,6 +172,7 @@ $(function () {
 
 
             } else {
+                $('.preloader_holder').addClass('holder');
                 console.log('нет данных по календарю id ' + id);
 
                 var selectedId = [];
@@ -351,4 +352,6 @@ $(function () {
     }
 
     CalendarOut(yearCalendar, monthCalendar);
+
+    $('.preloader_holder').removeClass('holder');
 });
