@@ -91,6 +91,10 @@
 	color: #444;
 	position: relative;
 }
+.calendar th.caption {
+    background: #e4e7eb;
+    border: none;
+}
 .calendar th.header_table {
     position: relative;
 	background: gray;

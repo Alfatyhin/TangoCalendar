@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 // роуты
 Route::get('/', [IndexController::class, 'index'])
     ->name('index');
-Route::get('/getevents', [IndexController::class, 'getEvents'])
+Route::get('/getevents/', [IndexController::class, 'setAppCalendar'])
     ->name('get.events');
 Route::get('/privacy-policy', [IndexController::class, 'privacyPolicy'])
     ->name('privacy-policy');

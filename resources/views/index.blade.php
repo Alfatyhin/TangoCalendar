@@ -1,4 +1,7 @@
-
+<?php
+/** @var \app\Models\AppCalendar $AppCalendar
+ */
+?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -12,7 +15,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-1.3.min.js') }}" defer></script>
-    <script src="{{ asset('js/coda.js?1.1') }}" defer></script>
+    <script src="{{ asset('js/coda.js?1.2') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -20,7 +23,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css?v1.2.2') }}" rel="stylesheet">
-    <link href="{{ asset('css/master.css?v1.2.2') }}" rel="stylesheet">
+    <link href="{{ asset('css/master.css?v1.2.3') }}" rel="stylesheet">
 
     <meta name="description" content="{{$pageDescription}}">
     <link type="image/x-icon" rel="shortcut icon" href="img/logo.ico">
@@ -39,7 +42,6 @@
     <meta property="og:updated_time" content="">
 
     <script>
-        var listEvents = @json($listEvents);
         var yearCalendar = {{$yearCalendar}};
         var monthCalendar = {{$monthCalendar}};
         var messagesLog = @json($messagesLog);
@@ -64,34 +66,34 @@
                     <span>Festivals</span>
                     <ul class="sub-menu">
                         @foreach($calendarList['festivals'] as $items)
-                            @foreach($items as $item)
-                                <li class="{{$item['class']}}">
+                            @foreach($items as $id)
+                                <li class="{{$calendarsCollection[$id]->getClass()}}">
                                     <label>
                                         <input class="calendar_id"
                                                type="checkbox" name="event_types"
-                                               value="{{$item['id']}}"
-                                               {{$item['select']}}
+                                               value="{{$id}}"
+                                               {{$calendarsCollection[$id]->getSelect()}}
                                         />
-                                        <span>{{$item['calendarName']}} </span>
+                                        <span>{{$calendarsCollection[$id]->getName()}} </span>
                                         <div class="description">
-                                            {{$item['description']}}
+                                            {{$calendarsCollection[$id]->getDescription()}}
                                         </div>
                                     </label>
                                 </li>
                             @endforeach
                         @endforeach
                         @foreach($calendarList['master_classes'] as $items)
-                            @foreach($items as $item)
-                                    <li class="{{$item['class']}}">
+                            @foreach($items as $id)
+                                    <li class="{{$calendarsCollection[$id]->getClass()}}">
                                         <label>
                                             <input class="calendar_id"
                                                    type="checkbox" name="event_types"
-                                                   value="{{$item['id']}}"
-                                                {{$item['select']}}
+                                                   value="{{$id}}"
+                                                {{$calendarsCollection[$id]->getSelect()}}
                                             />
-                                            <span>{{$item['calendarName']}} </span>
+                                            <span>{{$calendarsCollection[$id]->getName()}} </span>
                                             <div class="description">
-                                                {{$item['description']}}
+                                                {{$calendarsCollection[$id]->getDescription()}}
                                             </div>
                                         </label>
                                     </li>
@@ -107,17 +109,17 @@
                             <li>
                                 <span>{{$city}}</span>
                                 <ul>
-                                    @foreach($items as $item)
-                                        <li class="{{$item['class']}}">
+                                    @foreach($items as $id)
+                                        <li class="{{$calendarsCollection[$id]->getClass()}}">
                                             <label>
                                                 <input class="calendar_id"
                                                        type="checkbox" name="event_types"
-                                                       value="{{$item['id']}}"
-                                                    {{$item['select']}}
+                                                       value="{{$id}}"
+                                                    {{$calendarsCollection[$id]->getSelect()}}
                                                 />
-                                                <span>{{$item['calendarName']}} </span>
+                                                <span>{{$calendarsCollection[$id]->getName()}} </span>
                                                 <div class="description">
-                                                    {{$item['description']}}
+                                                    {{$calendarsCollection[$id]->getDescription()}}
                                                 </div>
                                             </label>
                                         </li>
@@ -134,17 +136,17 @@
                             <li>
                                 <span>{{$city}}</span>
                                 <ul>
-                                    @foreach($items as $item)
-                                        <li class="{{$item['class']}}">
+                                    @foreach($items as $id)
+                                        <li class="{{$calendarsCollection[$id]->getClass()}}">
                                             <label>
                                                 <input class="calendar_id"
                                                        type="checkbox" name="event_types"
-                                                       value="{{$item['id']}}"
-                                                    {{$item['select']}}
+                                                       value="{{$id}}"
+                                                    {{$calendarsCollection[$id]->getSelect()}}
                                                 />
-                                                <span>{{$item['calendarName']}} </span>
+                                                <span>{{$calendarsCollection[$id]->getName()}} </span>
                                                 <div class="description">
-                                                    {{$item['description']}}
+                                                    {{$calendarsCollection[$id]->getDescription()}}
                                                 </div>
                                             </label>
                                         </li>
@@ -160,14 +162,23 @@
 
         <div class="calendar" id="calendar">
             <table  rules='none' style=' '>
-                <caption> танго календарь: <span class="year"></span> год </caption>
+                <thead>
                 <tr>
-                    <th class="header_table" colspan="7">
-                        <div class='button_cal left' data="plus"> < </div>
-                        <span class="month"></span>
-                        <div class='button_cal right' data="minus"> > </div>
+                    <th class="caption" colspan="7">
+                        танго календарь: <span class="year"></span> год
                     </th>
                 </tr>
+                <tr>
+                    <th class="header_table" colspan="7">
+                        <div class='button_cal right' data="minus"> < </div>
+                        <span class="month"></span>
+                        <div class='button_cal left' data="plus"> > </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
             </table>
         </div>
 
@@ -176,7 +187,7 @@
 
         <form id="calendar_set"  action="{{route('get.events')}}" method="get">
             <input class="calendar_id_send" type="hidden" name="calendar_id" value="" />
-            <input class="set_date" type="hidden" name="set_date" value="" />
+            <input class="set_date" type="hidden" name="set_date" value="{{$yearCalendar}}-{{$monthCalendar+1}}-1" />
         </form>
 
 
