@@ -117,18 +117,26 @@ class AppCalendar
                 $calendar->setSelect('checked');
                 $calendar->setClass('active');
 
-                $gcalendarId = $calendar->gcalendarId;
+            } else {
+                if (!empty($selectedCalendarsList)) {
+                    $calendar->setSelect(null);
+                    $calendar->setClass(null);
+                }
 
+            }
+
+            $gcalendarId = $calendar->gcalendarId;
+            $select = $calendar->getSelect();
+
+            if ($select == 'checked') {
                 // добавляем события в календарь
                 $events = $this->getCalendarEvents($gcalendarId, $timeMin, $timeMax);
                 $DataEvents = $this->DataEvents;
                 $DataEvents[$id][$year][$month] = $events;
                 $this->DataEvents = $DataEvents;
 
-            } else {
-                $calendar->setSelect(null);
-                $calendar->setClass(null);
             }
+
         }
 
         $this->selectedCalendarsList = $selectedCalendarsList;

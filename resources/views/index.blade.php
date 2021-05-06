@@ -15,7 +15,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-1.3.min.js') }}" defer></script>
-    <script src="{{ asset('js/coda.js?1.2') }}" defer></script>
+    <script src="{{ asset('js/coda.js?1.2.3') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

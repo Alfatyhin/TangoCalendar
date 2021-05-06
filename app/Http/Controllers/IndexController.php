@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 class IndexController extends Controller
 {
 
-
-
     public function index(Request $request)
     {
 
@@ -55,6 +53,7 @@ class IndexController extends Controller
             $messagesLog[] = "берем  время старта календаря из сессии $calendarDateStart";
         } else {
             $calendarDateStart = $appCalendar->setCalendarDateStart(\Date('Y-n-1'));
+            session(['SetTimeDataEvents' => $calendarDateStart]);
         }
         $calendarDateStart = new \DateTime($calendarDateStart);
         $yearCalendar = $calendarDateStart->format('Y');
@@ -69,8 +68,7 @@ class IndexController extends Controller
             session(['calendarCollection' => $calendarsCollection]);
         }
 
-        $calendarsCollection = $appCalendar->setCalendarCollection($calendars);
-        session(['calendarCollection' => $calendarsCollection]);
+//        var_dump($calendarsCollection);
 
         if (session()->has('calendarTypeList')) {
             $calendarTypeList = session('calendarTypeList');
@@ -94,10 +92,7 @@ class IndexController extends Controller
         // кеш информации календарей
         session(['DataEvents' => $DataEventsCollection]);
 
-
-
-
-
+        
         $messagesLog[] = 'backend finished';
         $messagesLog[] = '----------------------------';
 
