@@ -15,7 +15,6 @@ class IndexController extends Controller
 
     public function index(Request $request)
     {
-
         $pageDescription = "Танго календарь,  Танго фестивали в Украине,
         милонги в Киеве и других городах Украины, танго семинары, расписания танго школ.";
 
@@ -29,12 +28,16 @@ class IndexController extends Controller
         $setTimeEvents = new \DateTime($TimeDataEvents);
         $setTimeEvents->modify('+1 hour');
 
-        $messagesLog[] = "текущее время $dateTime время установки событий в сессии $TimeDataEvents";
+        $messagesLog[] = "время установки событий в сессии $TimeDataEvents";
+        $messagesLog[] = "текущее время $dateTime";
 
         if ($setTimeEvents <= $setDate) {
             $messagesLog[] = 'удаляем данные о событиях из сессии';
             $request->session()->forget('DataEvents');
-            session(['SetTimeDataEvents' => $dateTime]);
+            $newDateTimeevents = Date('Y-m-d H:i');
+            session(['SetTimeDataEvents' => $newDateTimeevents]);
+            $messagesLog[] = "новое время $newDateTimeevents";
+
         }
         ///////////////////////////////////////////////
         /// список календарей
@@ -53,7 +56,7 @@ class IndexController extends Controller
             $messagesLog[] = "берем  время старта календаря из сессии $calendarDateStart";
         } else {
             $calendarDateStart = $appCalendar->setCalendarDateStart(\Date('Y-n-1'));
-            session(['SetTimeDataEvents' => $calendarDateStart]);
+            session(['calendarStart'  => $calendarDateStart]);
         }
         $calendarDateStart = new \DateTime($calendarDateStart);
         $yearCalendar = $calendarDateStart->format('Y');
@@ -62,7 +65,12 @@ class IndexController extends Controller
 
         if (session()->has('calendarCollection')) {
             $collection = session('calendarCollection');
-            $calendarsCollection = $appCalendar->installCalendarCollection($collection);
+            if (!empty($collection)) {
+                $calendarsCollection = $appCalendar->installCalendarCollection($collection);
+            } else {
+                $calendarsCollection = $appCalendar->setCalendarCollection($calendars);
+                session(['calendarCollection' => $calendarsCollection]);
+            }
         } else {
             $calendarsCollection = $appCalendar->setCalendarCollection($calendars);
             session(['calendarCollection' => $calendarsCollection]);
@@ -92,7 +100,7 @@ class IndexController extends Controller
         // кеш информации календарей
         session(['DataEvents' => $DataEventsCollection]);
 
-        
+
         $messagesLog[] = 'backend finished';
         $messagesLog[] = '----------------------------';
 
