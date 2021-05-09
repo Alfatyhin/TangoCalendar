@@ -14,8 +14,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/jquery-1.3.min.js') }}" defer></script>
-    <script src="{{ asset('js/coda.js?1.2.3') }}" defer></script>
+    <script src="{{ asset('js/jquery-3.5.1.min.js') }}" defer></script>
+    <script src="{{ asset('js/coda.js?1.2.6') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -23,8 +23,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/preloader.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css?v1.2.2') }}" rel="stylesheet">
-    <link href="{{ asset('css/master.css?v1.2.3') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css?v1.2.4') }}" rel="stylesheet">
+    <link href="{{ asset('css/master.css?v1.2.9') }}" rel="stylesheet">
 
     <meta name="description" content="{{$pageDescription}}">
     <link type="image/x-icon" rel="shortcut icon" href="img/logo.ico">
@@ -65,9 +65,10 @@
 
         <div class="calendar_list">
             <span class="caption">Calendars List</span>
-            <span class="mobail menu-close">X</span>
+            <span class="mobail menu-close"></span>
+            <span class="mobail menu-open"></span>
             <ul class="calendars">
-                <li class="first festival_list">
+                <li class="first open festival_list">
                     <span>Festivals</span>
                     <ul class="sub-menu">
                         @foreach($calendarList['festivals'] as $items)
@@ -80,10 +81,13 @@
                                                {{$calendarsCollection[$id]->getSelect()}}
                                         />
                                         <span>{{$calendarsCollection[$id]->getName()}} </span>
+
+                                    </label>
+                                    <div class="info">
                                         <div class="description">
                                             {{$calendarsCollection[$id]->getDescription()}}
                                         </div>
-                                    </label>
+                                    </div>
                                 </li>
                             @endforeach
                         @endforeach
@@ -97,10 +101,12 @@
                                                 {{$calendarsCollection[$id]->getSelect()}}
                                             />
                                             <span>{{$calendarsCollection[$id]->getName()}} </span>
+                                        </label>
+                                        <div class="info">
                                             <div class="description">
                                                 {{$calendarsCollection[$id]->getDescription()}}
                                             </div>
-                                        </label>
+                                        </div>
                                     </li>
                             @endforeach
                         @endforeach
@@ -111,26 +117,25 @@
                     <span>Милонги в городе</span>
                     <ul class="sub-menu">
                         @foreach($calendarList['milongas'] as $city=>$items)
-                            <li>
-                                <span>{{$city}}</span>
-                                <ul>
-                                    @foreach($items as $id)
-                                        <li class="{{$calendarsCollection[$id]->getClass()}}">
-                                            <label>
-                                                <input class="calendar_id"
-                                                       type="checkbox" name="event_types"
-                                                       value="{{$id}}"
-                                                    {{$calendarsCollection[$id]->getSelect()}}
-                                                />
-                                                <span>{{$calendarsCollection[$id]->getName()}} </span>
-                                                <div class="description">
-                                                    {{$calendarsCollection[$id]->getDescription()}}
-                                                </div>
-                                            </label>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </li>
+
+                            @foreach($items as $id)
+                                <li class="{{$calendarsCollection[$id]->getClass()}}">
+                                    <label>
+                                        <input class="calendar_id"
+                                               type="checkbox" name="event_types"
+                                               value="{{$id}}"
+                                            {{$calendarsCollection[$id]->getSelect()}}
+                                        />
+                                        <span>{{$calendarsCollection[$id]->getName()}} </span>
+                                    </label>
+                                    <div class="info">
+                                        <div class="description">
+                                            {{$calendarsCollection[$id]->getDescription()}}
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+
                         @endforeach
                     </ul>
                 </li>
@@ -150,10 +155,13 @@
                                                     {{$calendarsCollection[$id]->getSelect()}}
                                                 />
                                                 <span>{{$calendarsCollection[$id]->getName()}} </span>
+
+                                            </label>
+                                            <div class="info">
                                                 <div class="description">
                                                     {{$calendarsCollection[$id]->getDescription()}}
                                                 </div>
-                                            </label>
+                                            </div>
                                         </li>
                                     @endforeach
                                 </ul>

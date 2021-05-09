@@ -157,8 +157,6 @@ class AppCalendar
             $eventDescription = $event->getDescription();
             $eventLocation    = $event->getLocation();
 
-            $eventDescLite = mb_substr($eventDescription, 0, 200);
-
             if (empty($eventDescription)) {
                 $eventDescription = '';
             }
@@ -189,7 +187,7 @@ class AppCalendar
             $listEvents[$dateStart] = [
                 'eventId'     => $eventId,
                 'name'        => $eventName,
-                'description' => $eventDescLite,
+                'description' => $eventDescription,
                 'location'    => $eventLocation,
                 'dateStart'   => $dateStart,
                 'timeStart'   => $timeStart,

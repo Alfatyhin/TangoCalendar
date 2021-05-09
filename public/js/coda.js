@@ -117,6 +117,25 @@ $(function () {
         $('#calendar table tbody').html(txt);
 
         appendToCalendar(year, mon);
+
+
+        $('.description-view').click(function () {
+            $(this).parents('ul.sub_menu').toggleClass('content');
+            $(this).parents('ul.event_list').toggleClass('pop-app');
+            $(this).parents('ul.event_list').toggle('500');
+        });
+        $('.pop-app-close').click(function () {
+            $(this).parents('ul.sub_menu').toggleClass('content');
+            $(this).parents('ul.event_list').toggleClass('pop-app');
+            $(this).parents('ul.event_list').toggle('500');
+        });
+        $('.event_list .menu-close').click(function () {
+            $(this).parents('ul').first().hide('500');
+            event.stopPropagation();
+        });
+        $('.event_list > li').click(function () {
+            $(this).children('ul.sub_menu').show('500');
+        });
     }
 
     function appendToCalendar(year, month) {
@@ -194,7 +213,7 @@ $(function () {
             // options
             var distance = 10;
             var time = 250;
-            var hideDelay = 500;
+            var hideDelay = 100;
 
             var hideDelayTimer = null;
 
@@ -259,7 +278,6 @@ $(function () {
 
 
     $('.calendar_list input.calendar_id').change(function () {
-
         appendToCalendar(yearCalendar, monthCalendar);
     })
 
@@ -290,13 +308,26 @@ $(function () {
     function appendDate(date) {
         $('.activmon.date_' + date).addClass('date_has_event');
         $('.date_' + date + ' div').addClass('events');
-        $('.date_' + date + ' div').append('<ul class="event_list"></ul>');
+        if($('.date_' + date + ' ul').hasClass('event_list')) {
+
+        } else {
+            $('.date_' + date + ' div').append('<ul class="event_list"><li class="mobail"><span class="menu-close"></span></li></ul>');
+        }
+
+
     }
 
     function appendEvent(date, event) {
         var eventDate = `<li>
 <span class="title">${event['name']}</span>
     <ul class="sub_menu">
+        <li class="mobail">
+        <span class="menu-close"></span>
+        </li>
+        <li>
+        <span class="title">${event['name']}</span>
+        <span class="pop-app-close"></span>
+        </li>
         <li> Date: <br>
             <span>${event['dateStart']} : ${event['timeStart']}
                   <br> ${event['dateEnd']} : ${event['timeEnd']}
@@ -305,8 +336,9 @@ $(function () {
         <li> Location: <br>
             <span>${event['location']}</span>
         </li>
-        <li> Description: <br>
+        <li class="description"> Description: <br>
             <span>${event['description']}</span>
+            <span class="description-view"></span>
         </li>
     </ul>
 </li>`;
@@ -317,13 +349,27 @@ $(function () {
 
 
     $('.calendar_list .menu-close').click(function () {
-        $('.calendar_list ul.calendars').hide();
-        $('.calendar_list .menu-close').hide();
+        $('.calendar_list ul.calendars').hide('500');
+        $('.calendar_list .menu-close').hide('500');
+        $('.calendar_list .menu-open').show('500');
     });
-    $('.calendar_list .caption').click(function () {
-        $('.calendar_list ul.calendars').show();
-        $('.calendar_list .menu-close').show();
+    $('.calendar_list .menu-open').click(function () {
+        $('.calendar_list ul.calendars').show('500');
+        $('.calendar_list .menu-close').show('500');
+        $('.calendar_list .menu-open').hide('500');
+        $('.info .description').hide('500');
     });
+
+    $('.info').click(function () {
+        $(this).children('.description').toggle('500');
+    });
+
+    $('.calendars .first > span').click(function () {
+        var el = $(this).parent();
+        $(el).children('.sub-menu').toggle('500');
+    });
+
+
 
 
     // аякс обработка данных пока не работает
