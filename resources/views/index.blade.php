@@ -15,7 +15,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.5.1.min.js') }}" defer></script>
-    <script src="{{ asset('js/coda.js?1.2.6') }}" defer></script>
+    <script src="{{ asset('js/coda.js?1.2.7') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -24,7 +24,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/preloader.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css?v1.2.4') }}" rel="stylesheet">
-    <link href="{{ asset('css/master.css?v1.2.9') }}" rel="stylesheet">
+    <link href="{{ asset('css/master.css?v1.2.10') }}" rel="stylesheet">
 
     <meta name="description" content="{{$pageDescription}}">
     <link type="image/x-icon" rel="shortcut icon" href="img/logo.ico">

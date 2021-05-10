@@ -232,7 +232,7 @@
     position: absolute;
     right: 200px;
     top: -36px;
-    max-width: 400px;
+    max-width: 230px;
     width: max-content;
 }
 .calendar ul.event_list .sub_menu .title {
@@ -287,6 +287,10 @@
 .sub_menu.content .description {
     max-height: max-content !important;
     white-space: pre-wrap;
+}
+.calendar .date_has_event:hover > .events ul.event_list {
+    display: block;
+    right: 0px;
 }
 
 
@@ -350,8 +354,9 @@
         float: right;
     }
     .calendar_list .info:hover div {
-        left: -199px;
+        left: -216px;
         top: 25px;
+        padding-right: 25px;
     }
     .calendar_list .sub-menu li > span {
         text-align: center;
