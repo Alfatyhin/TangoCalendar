@@ -263,6 +263,9 @@ $(function () {
     }
 
     function appendEvent(date, event) {
+        var description = event['description'];
+        description = linkify(description);
+
         var eventDate = `<li>
 <span class="title">${event['name']}</span>
     <ul class="sub_menu">
@@ -282,7 +285,7 @@ $(function () {
             <span>${event['location']}</span>
         </li>
         <li class="description"> Description: <br>
-            <span>${event['description']}</span>
+            <span>${description}</span>
             <span class="description-view"></span>
         </li>
     </ul>
@@ -350,3 +353,10 @@ $(function () {
     $('.preloader_holder .preloader').addClass('preloader_dis');
     $('.preloader_holder .preloader').removeClass('preloader');
 });
+
+function linkify(text) {
+    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    });
+}
