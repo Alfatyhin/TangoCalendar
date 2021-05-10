@@ -7,6 +7,8 @@ $(function () {
         }
     }
 
+    setCalendarsSelected();
+
     var jmon=['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
     var jdn=['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 
@@ -147,6 +149,14 @@ $(function () {
         $('.date_has_event div.event').removeClass('event');
         $('.date_has_event').removeClass('date_has_event');
 
+        var selectedId = [];
+
+        $("input.calendar_id:checkbox:checked").each(function () {
+            var id = $(this).val();
+            selectedId.push(id);
+
+            Setobj('calendars-selected', selectedId);
+        });
 
         $("input.calendar_id:checkbox:checked").each(function () {
             var id = $(this).val();
@@ -199,13 +209,7 @@ $(function () {
 
                 console.log('нет данных по календарю id ' + id);
 
-                var selectedId = [];
-                $("input.calendar_id:checkbox:checked").each(function () {
-                    var id = $(this).val();
-                    selectedId.push(id);
-                });
                 selectedId = selectedId.join('|');
-
                 $('.calendar_id_send').val(selectedId);
                 $("#calendar_set").submit();
             }
@@ -352,6 +356,8 @@ $(function () {
     $('.preloader_holder').removeClass('holder');
     $('.preloader_holder .preloader').addClass('preloader_dis');
     $('.preloader_holder .preloader').removeClass('preloader');
+
+
 });
 
 function linkify(text) {
@@ -359,4 +365,35 @@ function linkify(text) {
     return text.replace(urlRegex, function(url) {
         return '<a href="' + url + '">' + url + '</a>';
     });
+}
+
+////////////////////////////////////////////////////////
+function Setobj(str, obj) {
+    var serialObj = JSON.stringify(obj);
+    localStorage.setItem(str, serialObj);
+}
+////////////////////////////////////////////////////////
+function Getobj(str) {
+    var res=JSON.parse(localStorage.getItem(str));
+    return (res);
+}
+
+function setCalendarsSelected() {
+    var calendarsId = Getobj('calendars-selected');
+
+    if (!!calendarsId) {
+        var selectedCalendars = {};
+        calendarsId.forEach(function(id) {
+            selectedCalendars[id] = id;
+        });
+
+        $("input.calendar_id").each(function () {
+            var id = $(this).val();
+            if (!!selectedCalendars[id]) {
+                $(this).prop('checked', true);
+            } else {
+                $(this).prop('checked', false);
+            }
+        });
+    }
 }
