@@ -33,13 +33,19 @@ class GcalendarService
         return ['name' => $calendarName, 'description' => $calendarDescription];
     }
 
-    public function getCalendarEvents($gcalendarId, $timeMin, $timeMax)
+    public function getCalendarEvents($gcalendarId, $timeMin, $timeMax, $count)
     {
-        $events = $this->service->events->listEvents($gcalendarId, [
+        $data = [
             'timeMin'      => $timeMin,
             'timeMax'      => $timeMax,
+            'orderBy'      => 'startTime',
             'singleEvents' => true,
-        ]);
+        ];
+        if ($count) {
+            $data['maxResults'] = $count;;
+        }
+
+        $events = $this->service->events->listEvents($gcalendarId, $data);
         return $events;
     }
 

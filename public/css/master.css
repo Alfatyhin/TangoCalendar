@@ -80,6 +80,7 @@
 }
 .calendars .first span {
     position: relative;
+    cursor: pointer;
 }
 .calendars .first > span:before {
     content: '-';
@@ -99,13 +100,58 @@
     content: '+';
 }
 .calendars .first .sub-menu {
-    display: none;
+    width: 0%;
+    opacity: 0;
+    height: 0px;
+    max-height: 0px;
+    font-size: 0px;
 }
 .calendars .first.open .sub-menu {
+    width: 94%;
+    opacity: 1;
+    height: max-content;
+    max-height: 500px;
+    font-size: 16px;
+}
+.sub-menu {
+    -webkit-transition: opacity .5s, max-height .5s, width .5s, font-size .5s;
+    transition: opacity .5s, max-height .5s, width .5s, font-size .5s;
+}
+.calendars span.count,
+.count.hash_events {
+    display: none;
+    position: absolute;
+    top: -12px;
+    right: 16px;
+    width: 15px;
+    height: 15px;
+    z-index: 100;
+    background: #444343;
+    color: #ffffff;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+.calendars .count.hash_events {
     display: block;
+    top: 7px;
+    right: 30px;
+}
+.calendars .count.hash_events:before {
+    display: none;
+}
+
+.calendars input:checked + span + span.count {
+    display: inline-block;
 }
 
 
+
+.calendar {
+    width: 45%;
+    margin: 20px 0;
+    float: left;
+}
 
 .calendar table {
 	border-collapse: separate;
@@ -245,13 +291,12 @@
     overflow: hidden;
     position: relative;
 }
-.calendar .sub_menu .description-view {
+.description-view {
     position: absolute;
     top: 158px;
     right: -9px;
     color: #4e9deb;
     font-size: 25px;
-    background: #e4e7eb;
     height: min-content;
     line-height: 16px;
     width: 30px;
@@ -260,13 +305,13 @@
 .calendar .sub_menu.content .description-view {
     display: none;
 }
-.calendar .sub_menu .description-view:before {
+.description-view:before {
     content: '\21F3';
     display: block;
     color: #000;
     font-size: 27px;
 }
-.calendar .description .description-view:hover {
+.description-view:hover {
    cursor: pointer;
 }
 
@@ -293,6 +338,35 @@
     right: 0px;
 }
 
+
+
+
+.world_events {
+    width: 30%;
+    height: 100vh;
+    float: right;
+    position: static;
+    right: 0;
+    top: 0;
+    border-left: 2px solid #ccc;
+    padding-left: 10px;
+}
+.world_events .event {
+    border: 1px solid #afadad;
+    border-radius: 10px;
+    padding: 4px;
+    box-shadow: 2px 2px 5px #000;
+    position: relative;
+}
+.world_events .title {
+    color: #67a6e8;
+}
+.world_events .description {
+    white-space: pre-wrap;
+    font-size: 14px;
+    max-height: 70px;
+    overflow: hidden;
+}
 
 
 /* start adaptive */

@@ -15,7 +15,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.5.1.min.js') }}" defer></script>
-    <script src="{{ asset('js/coda.js?1.2.7') }}" defer></script>
+    <script src="{{ asset('js/coda.js?1.2.8') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -23,8 +23,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/preloader.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css?v1.2.4') }}" rel="stylesheet">
-    <link href="{{ asset('css/master.css?v1.2.10') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css?v1.2.5') }}" rel="stylesheet">
+    <link href="{{ asset('css/master.css?v1.2.11') }}" rel="stylesheet">
 
     <meta name="description" content="{{$pageDescription}}">
     <link type="image/x-icon" rel="shortcut icon" href="img/logo.ico">
@@ -70,6 +70,7 @@
             <ul class="calendars">
                 <li class="first open festival_list">
                     <span>Festivals</span>
+                    <span class="count"></span>
                     <ul class="sub-menu">
                         @foreach($calendarList['festivals'] as $items)
                             @foreach($items as $id)
@@ -81,6 +82,7 @@
                                                {{$calendarsCollection[$id]->getSelect()}}
                                         />
                                         <span>{{$calendarsCollection[$id]->getName()}} </span>
+                                        <span class="count"></span>
 
                                     </label>
                                     <div class="info">
@@ -101,7 +103,10 @@
                                                 {{$calendarsCollection[$id]->getSelect()}}
                                             />
                                             <span>{{$calendarsCollection[$id]->getName()}} </span>
+                                            <span class="count"></span>
+
                                         </label>
+
                                         <div class="info">
                                             <div class="description">
                                                 {{$calendarsCollection[$id]->getDescription()}}
@@ -115,6 +120,7 @@
                 </li>
                 <li class="first milongas_list">
                     <span>Милонги в городе</span>
+                    <span class="count"></span>
                     <ul class="sub-menu">
                         @foreach($calendarList['milongas'] as $city=>$items)
 
@@ -127,7 +133,10 @@
                                             {{$calendarsCollection[$id]->getSelect()}}
                                         />
                                         <span>{{$calendarsCollection[$id]->getName()}} </span>
+                                        <span class="count"></span>
+
                                     </label>
+
                                     <div class="info">
                                         <div class="description">
                                             {{$calendarsCollection[$id]->getDescription()}}
@@ -141,6 +150,7 @@
                 </li>
                 <li class="first school_list">
                     <span>Танго клубы</span>
+                    <span class="count"></span>
                     <ul class="sub-menu">
                         @foreach($calendarList['tango_school'] as $city=>$items)
                             <li>
@@ -155,8 +165,10 @@
                                                     {{$calendarsCollection[$id]->getSelect()}}
                                                 />
                                                 <span>{{$calendarsCollection[$id]->getName()}} </span>
+                                                <span class="count"></span>
 
                                             </label>
+
                                             <div class="info">
                                                 <div class="description">
                                                     {{$calendarsCollection[$id]->getDescription()}}
@@ -194,9 +206,31 @@
                 </tbody>
             </table>
         </div>
+    <div class="world_events">
+        @if ($worldFest)
 
+            <h3> анонс ближайших фестивалей в мире </h3>
+            @foreach($worldFest as $item)
+
+                <div class="event">
+                    <span class="pop-app-close"></span>
+                    <p class="title">{{$item['name']}}</p>
+                    <p class="location">location: <span>{{$item['location']}}</span></p>
+                    <p class="date">date: <span> {{$item['dateStart']}} - {{$item['dateEnd']}}</span></p>
+                    <p class="description"> {{$item['description']}}</p>
+                    <span class="description-view"></span>
+                </div>
+
+            @endforeach
+        @endif
+
+    </div>
 
     <div class="clear"></div>
+
+
+
+
 
         <form id="calendar_set"  action="{{route('get.events')}}" method="get">
             <input class="calendar_id_send" type="hidden" name="calendar_id" value="" />

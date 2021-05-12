@@ -12,6 +12,7 @@ class AppCalendar
     private $selectedCalendarsList;
     private $calendarDateStart;
     private $DataEvents;
+    private $worldFest;
 
 
     private function __construct()
@@ -47,6 +48,18 @@ class AppCalendar
                     $data = [$id => $id];
                     $this->selectedCalendarsList = $data;
                 }
+            }
+
+            // полулаем будущие фестивали в мире
+            if ($type_events == 'festivals' && $item->country == 'All' ) {
+
+                $dateStart = new \DateTime();
+
+                $timeMin = $dateStart->format('Y-m') . '-01T00:00:00-00:00';
+                $timeMax = $dateStart->modify('+6 month')->format('Y-m-t') . 'T23:59:00-00:00';
+
+                $events = $this->getCalendarEvents($gcalendarId, $timeMin, $timeMax, 5);
+                $this->worldFest = $events;
             }
 
             if (isset($this->selectedCalendarsList[$id])) {
@@ -130,7 +143,7 @@ class AppCalendar
 
             if ($select == 'checked') {
                 // добавляем события в календарь
-                $events = $this->getCalendarEvents($gcalendarId, $timeMin, $timeMax);
+                $events = $this->getCalendarEvents($gcalendarId, $timeMin, $timeMax, 250);
                 $DataEvents = $this->DataEvents;
                 $DataEvents[$id][$year][$month] = $events;
                 $this->DataEvents = $DataEvents;
@@ -145,10 +158,10 @@ class AppCalendar
     }
 
     // получаем события календаря и формируем данные
-    public function getCalendarEvents($gcalendarId, $timeMin, $timeMax){
+    public function getCalendarEvents($gcalendarId, $timeMin, $timeMax, $count){
 
         $gCalendarService = GcalendarService::setService();
-        $events = $gCalendarService->getCalendarEvents($gcalendarId, $timeMin, $timeMax);
+        $events = $gCalendarService->getCalendarEvents($gcalendarId, $timeMin, $timeMax, $count);
 
         $listEvents = [];
         foreach ($events->getItems() as $event) {
@@ -243,5 +256,21 @@ class AppCalendar
         $this->DataEvents = $DataEvents;
 
         return $this->DataEvents;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorldFest()
+    {
+        return $this->worldFest;
+    }
+
+    /**
+     * @param mixed $worldFest
+     */
+    public function setWorldFest($worldFest)
+    {
+        $this->worldFest = $worldFest;
     }
 }

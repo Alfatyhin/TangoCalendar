@@ -100,6 +100,17 @@ class IndexController extends Controller
         // кеш информации календарей
         session(['DataEvents' => $DataEventsCollection]);
 
+        // будущие фестивали в мире
+        if (session()->has('worldFest')) {
+            $worldFest = session('worldFest');
+            $appCalendar->setWorldFest($worldFest);
+        } else {
+            $worldFest = $appCalendar->getWorldFest();
+            session(['worldFest' => $worldFest]);
+        }
+
+        $messagesLog[] = $worldFest;
+
 
         $messagesLog[] = 'backend finished';
         $messagesLog[] = '----------------------------';
@@ -111,7 +122,8 @@ class IndexController extends Controller
             'messagesLog'     => $messagesLog,
             'DataEvents'      => $DataEventsCollection,
             'calendarList'    => $calendarTypeList,
-            'calendarsCollection' => $calendarsCollection
+            'calendarsCollection' => $calendarsCollection,
+            'worldFest'       => $worldFest
         ]);
 
 

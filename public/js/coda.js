@@ -121,7 +121,7 @@ $(function () {
         appendToCalendar(year, mon);
 
 
-        $('.description-view').click(function () {
+        $('.calendar .description-view').click(function () {
             $(this).parents('ul.sub_menu').toggleClass('content');
             $(this).parents('ul.event_list').toggleClass('pop-app');
             $(this).parents('ul.event_list').toggle('500');
@@ -141,6 +141,7 @@ $(function () {
             $(this).children('ul.sub_menu').show('500');
             event.stopPropagation();
         });
+
     }
 
     function appendToCalendar(year, month) {
@@ -166,6 +167,10 @@ $(function () {
                 if (!!DataEvents[id][year][month]) {
 
                     var listEvents = DataEvents[id][year][month];
+
+                    var count = Object.keys(listEvents).length;
+
+                    $(this).parent().children('.count').html(count);
 
                     for (key in listEvents) {
 
@@ -198,10 +203,10 @@ $(function () {
                         }
 
                         appendEvent(event['dateStart'], event);
+
                     }
 
                 }
-
 
             } else {
                 $('.preloader_holder').addClass('holder');
@@ -214,7 +219,10 @@ $(function () {
                 $("#calendar_set").submit();
             }
 
+
+
         });
+
 
         $('.date_has_event').click(function () {
             $('.events ul.event_list', this).show('500');
@@ -222,8 +230,27 @@ $(function () {
         });
 
 
+        countFirst();
     }
 
+    function countFirst () {
+
+        $('.calendar_list .first').each(function () {
+
+            var count = 0;
+            $('input.calendar_id:checkbox:checked', this).each(function () {
+                count = $(this).parent().children('.count').html() / 1 + count;
+            });
+
+            if (count > 0 ) {
+                $(this).children('.count').html(count);
+                $(this).children('.count').addClass('hash_events');
+            } else {
+                $(this).children('.count').removeClass('hash_events');
+            }
+
+        });
+    }
 
 
     $('.calendar_list input.calendar_id').change(function () {
@@ -318,7 +345,7 @@ $(function () {
 
     $('.calendars .first > span').click(function () {
         var el = $(this).parent();
-        $(el).children('.sub-menu').toggle('500');
+        $(this).parent().toggleClass('open');
     });
 
 
@@ -356,6 +383,22 @@ $(function () {
     $('.preloader_holder').removeClass('holder');
     $('.preloader_holder .preloader').addClass('preloader_dis');
     $('.preloader_holder .preloader').removeClass('preloader');
+
+
+    $('.world_events .description').each(function () {
+        var txt = $(this).html();
+        $(this).html(linkify(txt));
+    });
+
+    $('.world_events .description-view').click(function () {
+        $(this).parents('.event').toggleClass('content');
+        $(this).parents('.world_events').toggleClass('pop-app');
+    });
+
+    $('.pop-app-close').click(function () {
+        $(this).parents('.content').toggleClass('content');
+        $(this).parents('.pop-app').toggleClass('pop-app');
+    });
 
 
 });
