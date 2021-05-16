@@ -170,7 +170,8 @@ $(function () {
 
                     var count = Object.keys(listEvents).length;
 
-                    $(this).parent().children('.count').html(count);
+
+                    $(this).parent().children('span').children('.count').html('(<span>' + count + '</span>)');
 
                     for (key in listEvents) {
 
@@ -184,7 +185,6 @@ $(function () {
 
                         if (event['dateStart'] != event['dateEnd']) {
 
-                            //предыдущий год и месяц
                             var eventDateStart = new Date(event['dateStart']);
                             var eventdateEnd = new Date(event['dateEnd']);
 
@@ -239,47 +239,27 @@ $(function () {
 
             var count = 0;
             $('input.calendar_id:checkbox:checked', this).each(function () {
-                count = $(this).parent().children('.count').html() / 1 + count;
+                var countx = $(this).parent().children('span').children('.count').children('span').html();
+                if (countx) {
+                    count = countx / 1 + count;
+                }
+
             });
 
             if (count > 0 ) {
-                $(this).children('.count').html(count);
-                $(this).children('.count').addClass('hash_events');
+                $(this).children('span').children('.count').html('(' + count + ')');
+                $(this).children('span').addClass('hash_events');
             } else {
-                $(this).children('.count').removeClass('hash_events');
+                $(this).children('span').removeClass('hash_events');
             }
 
         });
+
+
     }
 
 
-    $('.calendar_list input.calendar_id').change(function () {
-        appendToCalendar(yearCalendar, monthCalendar);
-    })
 
-    $('#calendar table .header_table .button_cal').click(function () {
-        var data = $(this).attr('data');
-
-        if (data == 'minus') {
-            //предыдущий год и месяц
-            var date = new Date(yearCalendar, monthCalendar, 1);
-            date.setDate(date.getDate() - 1);
-            yearCalendar = date.getFullYear();
-            monthCalendar = date.getMonth();
-        } else {
-            //следующий год и месяц
-            var date = new Date(yearCalendar, monthCalendar, 31);
-            date.setDate(date.getDate() + 1);
-            yearCalendar = date.getFullYear();
-            monthCalendar = date.getMonth();
-        }
-        var next = monthCalendar + 1;
-        var date = yearCalendar + '-' + next + '-1';
-
-        $("#calendar_set .set_date").val(date);
-
-        CalendarOut(yearCalendar, monthCalendar);
-    })
 
     function appendDate(date) {
         $('.activmon.date_' + date).addClass('date_has_event');
@@ -297,22 +277,38 @@ $(function () {
         var description = event['description'];
         description = linkify(description);
 
+        var dateStart = formatDate(event['dateStart']);
+        var dateEnd = formatDate(event['dateEnd']);
+
+        if (dateStart == dateEnd) {
+            var dateText = `<span class="date-start">${dateStart}</span>
+                <sapan class="time-start">начало в ${event['timeStart']}</sapan>
+                <span class="time-end"> окончание в ${event['timeEnd']}</span>`;
+            var classDate = 'one-event';
+        } else {
+            var dateText = `<span class="date-start">с ${dateStart}</span>
+                <sapan class="time-start">начало в ${event['timeStart']}</sapan>
+                <span class="date-end">по ${dateEnd}</span>
+                <span class="time-end"> окончание в ${event['timeEnd']}</span>`;
+            var classDate = 'many-event';
+        }
+
         var eventDate = `<li>
 <span class="title">${event['name']}</span>
     <ul class="sub_menu">
         <li class="mobail">
         <span class="menu-close"></span>
         </li>
-        <li>
+        <li class="title">
         <span class="title">${event['name']}</span>
         <span class="pop-app-close"></span>
         </li>
-        <li> Date: <br>
-            <span>${event['dateStart']} : ${event['timeStart']}
-                  <br> ${event['dateEnd']} : ${event['timeEnd']}
+        <li class="date ${classDate}"> Date: <br>
+            <span>
+               ${dateText}
             </span>
         </li>
-        <li> Location: <br>
+        <li class="location"> Location: <br>
             <span>${event['location']}</span>
         </li>
         <li class="description"> Description: <br>
@@ -322,7 +318,15 @@ $(function () {
     </ul>
 </li>`;
 
-        $('.date_' + date + ' .events ul.event_list').append(eventDate);
+        var viewMode = Getobj('view-mode')
+
+        if (viewMode == 'calendar') {
+            $('.date_' + date + ' .events ul.event_list').append(eventDate);
+        } else {
+            var txt = `<tr><td class="event_list" colspan="7"><ul class="list_event_list">${eventDate}</ul></td></tr>`;
+            $('#calendar table tbody').append(txt);
+        }
+
     }
 
 
@@ -378,35 +382,208 @@ $(function () {
 
     }
 
-    CalendarOut(yearCalendar, monthCalendar);
+    function listOut(year, month) {
+
+        // получаем имя месяца
+        $('#calendar .year').text(year);
+        $('#calendar .month').text(jmon[month]);
+        $('#calendar table tbody').html('');
+
+        var selectedId = [];
+
+        $("input.calendar_id:checkbox:checked").each(function () {
+            var id = $(this).val();
+            selectedId.push(id);
+
+            Setobj('calendars-selected', selectedId);
+        });
+
+
+        $("input.calendar_id:checkbox:checked").each(function () {
+            var id = $(this).val();
+
+            if (!!DataEvents[id] && !!DataEvents[id][year] && !!DataEvents[id][year][month]) {
+
+                if (!!DataEvents[id][year][month]) {
+
+                    var listEvents = DataEvents[id][year][month];
+
+                    var count = 0;
+
+                    for (key in listEvents) {
+
+
+                        var event = listEvents[key];
+
+                        var ToDeyDate = new Date();
+                        var eventdateEnd = new Date(event['dateEnd']);
+
+                        if (eventdateEnd >= ToDeyDate) {
+                            count++;
+                            appendEvent(event['dateStart'], event);
+                        } else {
+
+                        }
+                        $(this).parent().children('span').children('.count').html('(<span>' + count + '</span>)');
+
+                    }
+
+                }
+
+            } else {
+                $('.preloader_holder').addClass('holder');
+                $('.preloader_holder .preloader_dis').addClass('preloader');
+
+                console.log('нет данных по календарю id ' + id);
+
+                selectedId = selectedId.join('|');
+                $('.calendar_id_send').val(selectedId);
+                $("#calendar_set").submit();
+            }
+
+            $('.calendar .description-view').click(function () {
+                $(this).parents('ul.sub_menu').addClass('content');
+                $(this).parents('ul.list_event_list').addClass('pop-app');
+                $(this).parents('ul.event_list').show('500');
+            });
+            // $('.pop-app-close').click(function () {
+            //     $(this).parents('ul.sub_menu').toggleClass('content');
+            //     $(this).parents('ul.list_event_list').toggleClass('pop-app');
+            //     $(this).parents('ul.event_list').toggle('500');
+            //     event.stopPropagation();
+            // });
+            $('.list_event_list .menu-close').click(function () {
+                $(this).parents('ul.sub_menu').removeClass('content');
+                $(this).parents('ul.list_event_list').removeClass('pop-app');
+                $(this).parents('ul.event_list').hide('500');
+            });
+
+        });
+        countFirst();
+    }
+
 
     $('.preloader_holder').removeClass('holder');
     $('.preloader_holder .preloader').addClass('preloader_dis');
     $('.preloader_holder .preloader').removeClass('preloader');
 
 
-    $('.world_events .description').each(function () {
-        var txt = $(this).html();
-        $(this).html(linkify(txt));
+
+
+    $('#calendar .view_mode').click(function () {
+        var viewMode = Getobj('view-mode');
+        if (viewMode == 'calendar') {
+            var viewMode = 'list';
+        } else {
+            var viewMode = 'calendar';
+        }
+        Setobj('view-mode', viewMode);
+        eventStart(yearCalendar, monthCalendar);
     });
 
-    $('.world_events .description-view').click(function () {
-        $(this).parents('.event').toggleClass('content');
-        $(this).parents('.world_events').toggleClass('pop-app');
-    });
+    function eventStart(yearCalendar, monthCalendar) {
+        var viewMode = Getobj('view-mode');
+        if (!viewMode) {
+            var viewMode = 'list';
+            Setobj('view-mode', viewMode);
+        } else {
+        }
 
-    $('.pop-app-close').click(function () {
-        $(this).parents('.content').toggleClass('content');
-        $(this).parents('.pop-app').toggleClass('pop-app');
-    });
+        if (viewMode == 'calendar') {
+            $('#calendar .caption .view_mode .icon').html('&minusb;');
+            CalendarOut(yearCalendar, monthCalendar);
+        } else {
+            $('#calendar .caption .view_mode .icon').html('&plusb;');
+            listOut(yearCalendar, monthCalendar);
+        }
+    }
+
+
+    $('.calendar_list input.calendar_id').change(function () {
+        eventStart(yearCalendar, monthCalendar);
+    })
+
+    $('#calendar table .header_table .button_cal').click(function () {
+        var data = $(this).attr('data');
+
+        if (data == 'minus') {
+            //предыдущий год и месяц
+            var date = new Date(yearCalendar, monthCalendar, 1);
+            date.setDate(date.getDate() - 1);
+            yearCalendar = date.getFullYear();
+            monthCalendar = date.getMonth();
+        } else {
+            //следующий год и месяц
+            var date = new Date(yearCalendar, monthCalendar, 31);
+            date.setDate(date.getDate() + 1);
+            yearCalendar = date.getFullYear();
+            monthCalendar = date.getMonth();
+        }
+        var next = monthCalendar + 1;
+        var date = yearCalendar + '-' + next + '-1';
+
+        $("#calendar_set .set_date").val(date);
+
+        eventStart(yearCalendar, monthCalendar);
+    })
+
+    eventStart(yearCalendar, monthCalendar);
+
+    worldFestAdd();
+
+
+    function worldFestAdd() {
+
+        if (WorldFest) {
+
+            for (key in WorldFest) {
+
+                var event = WorldFest[key];
+
+                var dateStart = formatDate(event['dateStart']);
+                var dateEnd = formatDate(event['dateEnd']);
+
+                var eventText = `<div class="event">
+                <span class="pop-app-close"></span>
+                <p class="title">${event['name']}</p>
+            <p class="location">location: <span>${event['location']}</span></p>
+            <p class="date">date: с <span> ${dateStart} по ${dateEnd}</span></p>
+            <p class="description"> ${event['description']}</p>
+            <span class="description-view"></span>
+                </div>`;
+
+                $('.world_events').append(eventText);
+
+            }
+        }
+
+        $('.world_events .description').each(function () {
+            var txt = $(this).html();
+            $(this).html(linkify(txt));
+        });
+
+        $('.world_events .description-view').click(function () {
+            $(this).parents('.event').toggleClass('content');
+            $(this).parents('.world_events').toggleClass('pop-app');
+        });
+
+
+        $('.pop-app-close').click(function () {
+            $(this).parents('.content').toggleClass('content');
+            $(this).parents('.pop-app').toggleClass('pop-app');
+        });
+    }
 
 
 });
 
+
+
+
 function linkify(text) {
     var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     return text.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + url + '</a>';
+        return '<a target="_blank" href="' + url + '">' + url + '</a>';
     });
 }
 
@@ -439,4 +616,17 @@ function setCalendarsSelected() {
             }
         });
     }
+}
+function formatDate(date) {
+    var newDate = new Date(date);
+
+    var dey = newDate.getDate();
+    if (dey < 10) dey = '0' + dey;
+
+    var mm = newDate.getMonth() + 1;
+    if (mm < 10) mm = '0' + mm;
+
+    var yy = newDate.getFullYear();
+
+    return dey + '.' + mm + '.' + yy;
 }

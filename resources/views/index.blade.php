@@ -1,6 +1,7 @@
 <?php
 /** @var \app\Models\AppCalendar $AppCalendar
  */
+$verse = '1.3.3';
 ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -15,7 +16,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.5.1.min.js') }}" defer></script>
-    <script src="{{ asset('js/coda.js?1.2.8') }}" defer></script>
+    <script src="{{ asset('js/coda.js') }}?{{$verse}}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -23,8 +24,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/preloader.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css?v1.2.5') }}" rel="stylesheet">
-    <link href="{{ asset('css/master.css?v1.2.11') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?{{$verse}}" rel="stylesheet">
+    <link href="{{ asset('css/master.css') }}?{{$verse}}" rel="stylesheet">
 
     <meta name="description" content="{{$pageDescription}}">
     <link type="image/x-icon" rel="shortcut icon" href="img/logo.ico">
@@ -47,6 +48,7 @@
         var monthCalendar = {{$monthCalendar}};
         var messagesLog = @json($messagesLog);
         var DataEvents = @json($DataEvents);
+        var WorldFest = @json($worldFest);
 
     </script>
 </head>
@@ -69,8 +71,10 @@
             <span class="mobail menu-open"></span>
             <ul class="calendars">
                 <li class="first open festival_list">
-                    <span>Festivals</span>
-                    <span class="count"></span>
+                    <span>Festivals
+                        <span class="count"></span>
+                    </span>
+
                     <ul class="sub-menu">
                         @foreach($calendarList['festivals'] as $items)
                             @foreach($items as $id)
@@ -81,8 +85,9 @@
                                                value="{{$id}}"
                                                {{$calendarsCollection[$id]->getSelect()}}
                                         />
-                                        <span>{{$calendarsCollection[$id]->getName()}} </span>
-                                        <span class="count"></span>
+                                        <span>{{$calendarsCollection[$id]->getName()}}
+                                            <span class="count"></span>
+                                        </span>
 
                                     </label>
                                     <div class="info">
@@ -102,8 +107,10 @@
                                                    value="{{$id}}"
                                                 {{$calendarsCollection[$id]->getSelect()}}
                                             />
-                                            <span>{{$calendarsCollection[$id]->getName()}} </span>
-                                            <span class="count"></span>
+                                            <span>{{$calendarsCollection[$id]->getName()}}
+                                                <span class="count"></span>
+                                            </span>
+
 
                                         </label>
 
@@ -119,8 +126,9 @@
 
                 </li>
                 <li class="first milongas_list">
-                    <span>Милонги в городе</span>
-                    <span class="count"></span>
+                    <span>Милонги в городе
+                        <span class="count"></span>
+                    </span>
                     <ul class="sub-menu">
                         @foreach($calendarList['milongas'] as $city=>$items)
 
@@ -132,8 +140,10 @@
                                                value="{{$id}}"
                                             {{$calendarsCollection[$id]->getSelect()}}
                                         />
-                                        <span>{{$calendarsCollection[$id]->getName()}} </span>
+                                        <span>{{$calendarsCollection[$id]->getName()}}
                                         <span class="count"></span>
+                                        </span>
+
 
                                     </label>
 
@@ -149,8 +159,10 @@
                     </ul>
                 </li>
                 <li class="first school_list">
-                    <span>Танго клубы</span>
-                    <span class="count"></span>
+                    <span>Танго клубы
+                        <span class="count"></span>
+                    </span>
+
                     <ul class="sub-menu">
                         @foreach($calendarList['tango_school'] as $city=>$items)
                             <li>
@@ -164,8 +176,10 @@
                                                        value="{{$id}}"
                                                     {{$calendarsCollection[$id]->getSelect()}}
                                                 />
-                                                <span>{{$calendarsCollection[$id]->getName()}} </span>
-                                                <span class="count"></span>
+                                                <span>{{$calendarsCollection[$id]->getName()}}
+                                                    <span class="count"></span>
+                                                </span>
+
 
                                             </label>
 
@@ -191,12 +205,17 @@
                 <tr>
                     <th class="caption" colspan="7">
                         танго календарь: <span class="year"></span> год
+                        <span class="view_mode">вид <span class="icon"></span></span>
                     </th>
                 </tr>
                 <tr>
-                    <th class="header_table" colspan="7">
+                    <th class="header_table" colspan="2">
                         <div class='button_cal right' data="minus"> < </div>
+                    </th>
+                    <th class="header_table" colspan="3">
                         <span class="month"></span>
+                    </th>
+                    <th class="header_table" colspan="2">
                         <div class='button_cal left' data="plus"> > </div>
                     </th>
                 </tr>
@@ -210,18 +229,7 @@
         @if ($worldFest)
 
             <h3> анонс ближайших фестивалей в мире </h3>
-            @foreach($worldFest as $item)
 
-                <div class="event">
-                    <span class="pop-app-close"></span>
-                    <p class="title">{{$item['name']}}</p>
-                    <p class="location">location: <span>{{$item['location']}}</span></p>
-                    <p class="date">date: <span> {{$item['dateStart']}} - {{$item['dateEnd']}}</span></p>
-                    <p class="description"> {{$item['description']}}</p>
-                    <span class="description-view"></span>
-                </div>
-
-            @endforeach
         @endif
 
     </div>
@@ -240,7 +248,7 @@
 
 </div>
 <footer>
-
+    <span>calendar v{{$verse}}</span>
 </footer>
 
 </body>
