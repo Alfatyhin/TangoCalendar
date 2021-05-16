@@ -377,6 +377,7 @@
 }
 
 .calendar .list_event_list {
+    position: relative;
     margin: 10px 5px;
     border: 1px solid;
     border-radius: 10px;
@@ -738,9 +739,11 @@
 
 
     .world_events {
-        width: 100%;
-        height: max-content;
+        width: 96%;
         margin-bottom: 50px;
+        float: left;
+        padding: 0;
+        margin-left: 2%;
     }
 
     h3 {

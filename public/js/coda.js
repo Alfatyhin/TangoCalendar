@@ -293,6 +293,8 @@ $(function () {
             var classDate = 'many-event';
         }
 
+        var locationLink = getMapLink(event['location']);
+
         var eventDate = `<li>
 <span class="title">${event['name']}</span>
     <ul class="sub_menu">
@@ -310,13 +312,20 @@ $(function () {
         </li>
         <li class="location"> Location: <br>
             <span>${event['location']}</span>
+            <span>${locationLink}</span>
         </li>
         <li class="description"> Description: <br>
             <span>${description}</span>
             <span class="description-view"></span>
+            <div class="google_map">
+
+            </div>
         </li>
+
     </ul>
 </li>`;
+
+
 
         var viewMode = Getobj('view-mode')
 
@@ -630,3 +639,9 @@ function formatDate(date) {
 
     return dey + '.' + mm + '.' + yy;
 }
+
+function getMapLink(adres) {
+    var link = "<a href='http://maps.google.com/maps?q=" + encodeURIComponent(adres) + "' target='_blank'>Google Map</a>";
+    return link;
+}
+
