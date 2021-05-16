@@ -165,10 +165,17 @@ class AppCalendar
 
         $listEvents = [];
         foreach ($events->getItems() as $event) {
-            $eventId          = $event->getId();
-            $eventName        = $event->getSummary();
-            $eventDescription = $event->getDescription();
-            $eventLocation    = $event->getLocation();
+            $eventId                 = $event->getId();
+            $eventName               = $event->getSummary();
+            $eventDescription        = $event->getDescription();
+            $eventLocation           = $event->getLocation();
+            $eventCreatorEmail       = $event->getCreator()->getEmail();
+            $eventCreatorName        = $event->getCreator()->getDisplayName();
+            $eventOrganizerEmail     = $event->getOrganizer()->getEmail();
+            $eventOrganizerName      = $event->getOrganizer()->getDisplayName();
+            $eventType               = $event->getEventType();
+            $GgHtmlLink              = $event->getHtmlLink();
+//            var_dump($GgHtmlLink);
 
             if (empty($eventDescription)) {
                 $eventDescription = '';
@@ -198,15 +205,19 @@ class AppCalendar
 
 
             $listEvents[$dateStart] = [
-                'eventId'     => $eventId,
-                'name'        => $eventName,
-                'description' => $eventDescription,
-                'location'    => $eventLocation,
-                'dateStart'   => $dateStart,
-                'timeStart'   => $timeStart,
-                'dateEnd'     => $dateEnd,
-                'timeEnd'     => $timeEnd,
-                'update'      => $dateMod,
+                'eventId'        => $eventId,
+                'name'           => $eventName,
+                'description'    => $eventDescription,
+                'location'       => $eventLocation,
+                'dateStart'      => $dateStart,
+                'timeStart'      => $timeStart,
+                'dateEnd'        => $dateEnd,
+                'timeEnd'        => $timeEnd,
+                'update'         => $dateMod,
+                'creatorEmail'   => $eventCreatorEmail,
+                'creatorName'    => $eventCreatorName,
+                'organizerEmail' => $eventOrganizerEmail,
+                'organizerName'  => $eventOrganizerName
             ];
 
         }
