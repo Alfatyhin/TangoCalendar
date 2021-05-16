@@ -294,6 +294,7 @@ $(function () {
         }
 
         var locationLink = getMapLink(event['location']);
+        var  adresUrl = encodeURIComponent(event['location']);
 
         var eventDate = `<li>
 <span class="title">${event['name']}</span>
@@ -318,7 +319,9 @@ $(function () {
             <span>${description}</span>
             <span class="description-view"></span>
             <div class="google_map">
-
+                <iframe width='100%' height='350' frameborder='0' scrolling='no'
+                 marginheight='0' marginwidth='0'
+                 src='https://maps.google.com/maps?&amp;q=${adresUrl}&amp;output=embed'></iframe>
             </div>
         </li>
 
