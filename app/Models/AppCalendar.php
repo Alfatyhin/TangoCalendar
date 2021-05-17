@@ -56,10 +56,11 @@ class AppCalendar
                 $dateStart = new \DateTime();
 
                 $timeMin = $dateStart->format('Y-m') . '-01T00:00:00-00:00';
-                $timeMax = $dateStart->modify('+6 month')->format('Y-m-t') . 'T23:59:00-00:00';
+                $timeMax = $dateStart->modify('+11 month')->format('Y-m-t') . 'T23:59:00-00:00';
 
                 $events = $this->getCalendarEvents($gcalendarId, $timeMin, $timeMax, 5);
-                $this->worldFest = $events;
+
+                $this->setWorldFest($events);
             }
 
             if (isset($this->selectedCalendarsList[$id])) {
