@@ -248,7 +248,8 @@ $verse = '1.4.1';
 
 </div>
 <footer>
-    <span>calendar v{{$verse}}</span>
+    <span>Laravel v{{ Illuminate\Foundation\Application::VERSION }}</span>
+    <span>Tango calendar v{{$verse}}</span>
 </footer>
 
 </body>
