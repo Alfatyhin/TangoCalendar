@@ -28,10 +28,11 @@ class IndexController extends Controller
         $setTimeEvents = new \DateTime($TimeDataEvents);
         $setTimeEvents->modify('+1 hour');
 
+
         $messagesLog[] = "время установки событий в сессии $TimeDataEvents";
         $messagesLog[] = "текущее время $dateTime";
 
-        if ($setTimeEvents <= $setDate) {
+        if ($setTimeEvents <= $setDate || empty($TimeDataEvents)) {
             $messagesLog[] = 'удаляем данные о событиях из сессии';
             $request->session()->forget('DataEvents');
             $newDateTimeevents = Date('Y-m-d H:i');
@@ -76,6 +77,7 @@ class IndexController extends Controller
             session(['calendarCollection' => $calendarsCollection]);
         }
 
+
 //        var_dump($calendarsCollection);
 
         if (session()->has('calendarTypeList')) {
@@ -108,8 +110,7 @@ class IndexController extends Controller
             $worldFest = $appCalendar->getWorldFest();
             session(['worldFest' => $worldFest]);
         }
-
-        $messagesLog[] = $worldFest;
+        
 
 
         $messagesLog[] = 'backend finished';
