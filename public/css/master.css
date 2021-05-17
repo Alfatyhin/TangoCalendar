@@ -344,19 +344,19 @@
 .description-view {
     position: absolute;
     top: 0;
-    right: -9px;
-    color: #4e9deb;
+    right: 3px;
     font-size: 25px;
-    height: min-content;
-    line-height: 16px;
-    width: 30px;
-    height: 30px;
+    line-height: 16px !important;
+    width: 22px;
+    height: 20px;
+    border: 1px solid !important;
+    padding-top: 3px;
 }
 .calendar .sub_menu.content .description-view {
     display: none;
 }
 .description-view:before {
-    content: '\21F3';
+    content: '\2921';
     display: block;
     color: #000;
     font-size: 27px;
@@ -467,7 +467,7 @@
     margin: 10px 0;
 }
 .world_events .description-view {
-    top: 30%;
+    top: 25%;
 }
 
 
