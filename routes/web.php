@@ -40,3 +40,13 @@ Route::post('/add-calendar/save', [HomeController::class, 'saveCalendar'])
 
 Route::get('/api/getevents', [Api::class, 'getCalendarEvents'])
     ->name('api.getevents');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+
+
+Route::get('auth/facebook', [SocialController::class, 'facebookRedirect']);
+
+Route::get('auth/facebook/callback', [SocialController::class, 'loginWithFacebook']);

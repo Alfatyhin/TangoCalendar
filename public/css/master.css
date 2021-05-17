@@ -784,4 +784,7 @@
         right: 5px;
         top: auto;
     }
+    .world_events .description-view {
+        top: 16%;
+    }
 }
