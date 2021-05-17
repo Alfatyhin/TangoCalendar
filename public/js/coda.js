@@ -317,9 +317,6 @@ $(function () {
         <li class="description"> Description: <br>
             <span>${description}</span>
             <span class="description-view"></span>
-            <div class="google_map">
-
-            </div>
         </li>
 
     </ul>
@@ -544,7 +541,6 @@ $(function () {
     function worldFestAdd() {
 
         if (WorldFest) {
-
             for (key in WorldFest) {
 
                 var event = WorldFest[key];
@@ -552,14 +548,18 @@ $(function () {
                 var dateStart = formatDate(event['dateStart']);
                 var dateEnd = formatDate(event['dateEnd']);
 
-                var eventText = `<div class="event">
+                var adressMap = getMapLink(event['location']);
+
+                var eventText = `<div class="container"> <div class="event">
                 <span class="pop-app-close"></span>
                 <p class="title">${event['name']}</p>
-            <p class="location">location: <span>${event['location']}</span></p>
+            <p class="location">location: <span>${event['location']}</span>
+            <span>${adressMap}</span>
+            </p>
             <p class="date">date: с <span> ${dateStart} по ${dateEnd}</span></p>
             <p class="description"> ${event['description']}</p>
             <span class="description-view"></span>
-                </div>`;
+                </div></div>`;
 
                 $('.world_events').append(eventText);
 
@@ -573,7 +573,7 @@ $(function () {
 
         $('.world_events .description-view').click(function () {
             $(this).parents('.event').toggleClass('content');
-            $(this).parents('.world_events').toggleClass('pop-app');
+            $(this).parents('.container').toggleClass('pop-app');
         });
 
 
