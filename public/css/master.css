@@ -711,7 +711,7 @@
         height: max-content;
     }
     .event_list .menu-close {
-
+        top: 1%;
     }
     .event_list .menu-close:before {
         content: '\00D7';

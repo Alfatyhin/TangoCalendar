@@ -1,7 +1,7 @@
 <?php
 /** @var \app\Models\AppCalendar $AppCalendar
  */
-$verse = '1.3.5.1';
+$verse = '1.4.0';
 ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
