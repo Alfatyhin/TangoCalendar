@@ -110,7 +110,7 @@ class IndexController extends Controller
             $worldFest = $appCalendar->getWorldFest();
             session(['worldFest' => $worldFest]);
         }
-        
+
 
 
         $messagesLog[] = 'backend finished';
