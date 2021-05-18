@@ -162,7 +162,16 @@ ul {
     display: none;
 }
 
-
+.btn.facebook {
+    background: #3B5499;
+    color: #ffffff;
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+    display: block;
+    border-radius: 3px;
+    font-size: 12px;
+}
 
 footer {
     width: auto;
@@ -182,6 +191,8 @@ footer {
         width: 85% !important;
     }
 }
+
+
 
 
 

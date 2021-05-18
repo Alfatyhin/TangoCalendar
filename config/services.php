@@ -33,6 +33,6 @@ return [
     'facebook' => [
         'client_id' => '358233471661057',
         'client_secret' => '63874528a3f51bdd443efc992506347a',
-        'redirect' => 'http://localhost:8000/auth/facebook/callback',
+        'redirect' => 'https://tango-calendar.it-alex.info/auth/facebook/callback',
     ],
 ];

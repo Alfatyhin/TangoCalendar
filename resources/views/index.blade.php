@@ -1,7 +1,7 @@
 <?php
 /** @var \app\Models\AppCalendar $AppCalendar
  */
-$verse = '1.4.1';
+$verse = '1.4.2';
 ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -58,6 +58,23 @@ $verse = '1.4.1';
 <div class="holder preloader_holder">
     <div class="preloader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div>
+
+@if (Route::has('login'))
+    <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+        @auth
+            <a class="btn" href="{{ url('dashboard') }}">
+                {{ Auth::user()->name }}
+            </a>
+        @else
+            {{-- Login with Facebook --}}
+
+            <a class="btn facebook" href="{{ url('auth/facebook') }}">
+                Enter with Facebook
+            </a>
+
+        @endauth
+    </div>
+@endif
 
 <div class="content">
 

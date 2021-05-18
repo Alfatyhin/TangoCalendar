@@ -26,17 +26,17 @@ class SocialController extends Controller
 
             if($isUser){
                 Auth::login($isUser);
-                return redirect('/dashboard');
+                return redirect('/');
             }else{
                 $createUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'fb_id' => $user->id,
-                    'password' => encrypt('admin@123')
+                    'password' => encrypt('user@$12345asdsfghj')
                 ]);
 
                 Auth::login($createUser);
-                return redirect('/dashboard');
+                return redirect('/');
             }
 
         } catch (Exception $exception) {
