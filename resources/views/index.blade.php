@@ -1,7 +1,7 @@
 <?php
 /** @var \app\Models\AppCalendar $AppCalendar
  */
-$verse = '1.4.2';
+$verse = '1.4.4';
 ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -60,7 +60,7 @@ $verse = '1.4.2';
 </div>
 
 @if (Route::has('login'))
-    <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+    <div class="login">
         @auth
             <a class="btn" href="{{ url('dashboard') }}">
                 {{ Auth::user()->name }}
@@ -265,7 +265,6 @@ $verse = '1.4.2';
 
 </div>
 <footer>
-    <span>Laravel v{{ Illuminate\Foundation\Application::VERSION }}</span>
     <span>Tango calendar v{{$verse}}</span>
 </footer>
 

@@ -16,7 +16,7 @@ class CreateUserCalendarsTable extends Migration
         Schema::create('user_calendars', function (Blueprint $table) {
             $table->id();
             $table->integer('userId')->index();
-            $table->string('gcalendarId')->index();
+            $table->string('calendarId')->index()->unique();
             $table->string('type_events')->nullable()->index();
             $table->string('country')->nullable()->index();
             $table->string('city')->nullable()->index();

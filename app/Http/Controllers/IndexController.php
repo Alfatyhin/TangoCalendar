@@ -15,9 +15,6 @@ class IndexController extends Controller
 
     public function index(Request $request)
     {
-        $pageDescription = "Танго календарь,  Танго фестивали в Украине,
-        милонги в Киеве и других городах Украины, танго семинары, расписания танго школ.";
-
 
         ////////////////////////////////////////////
         // обновление данных о событиях раз в час
@@ -117,7 +114,6 @@ class IndexController extends Controller
         $messagesLog[] = '----------------------------';
 
         return view('index', [
-            'pageDescription' => $pageDescription,
             'yearCalendar'    => $yearCalendar,
             'monthCalendar'   => $monthCalendar,
             'messagesLog'     => $messagesLog,
@@ -159,6 +155,10 @@ class IndexController extends Controller
     }
 
     public function userAgreement()
+    {
+        return view('user-agreement');
+    }
+    public function userDataDelete()
     {
         return view('user-agreement');
     }

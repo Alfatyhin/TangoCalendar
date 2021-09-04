@@ -34,6 +34,10 @@ body {
     background: url(../img/body.png) repeat-x;
     color: #737070;
     margin: 0;
+    min-height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
 }
 body h1 {
     padding-top: 20px;
@@ -46,6 +50,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 body > .content {
     padding: 0 10px;
+    min-height: 80vh;
 }
 .clear {
     clear: both;
@@ -54,6 +59,37 @@ body > .content {
 ul {
     list-style: none;
 }
+img.user_logo {
+    display: inline-block;
+    width: 40px;
+}
+img.round {
+    border-radius: 50%;
+}
+button, [type='button'], [type='reset'], [type='submit'] {
+    border: 1px solid #aaa;
+    padding: 3px 5px;
+    line-height: 1em;
+    font-size: 0.9em;
+    border-radius: 3px;
+    box-shadow: 3px 3px 5px;
+}
+button:hover, [type='button']:hover, [type='reset']:hover, [type='submit']:hover {
+    cursor: pointer;
+}
+[type='text'], [type='email'], [type='url'], [type='password'], [type='number'],
+[type='date'], [type='datetime-local'], [type='month'], [type='search'], [type='tel'],
+[type='time'], [type='week'], [multiple], textarea, select {
+    border: 1px solid;
+    padding: 2px 5px;
+    line-height: 1em;
+    font-size: 0.9em;
+    background: #d1d7f1;
+}
+[type='submit'] {
+
+}
+
 .mobail {
     display: none;
 }
@@ -162,6 +198,12 @@ ul {
     display: none;
 }
 
+.login {
+    width: max-content;
+    margin-right: 20px;
+    margin-left: auto;
+    margin-top: 20px;
+}
 .btn.facebook {
     background: #3B5499;
     color: #ffffff;
@@ -174,13 +216,23 @@ ul {
 }
 
 footer {
-    width: auto;
+    width: 100%;
     padding: 20px;
     background: #7d7e80;
     position: static;
     left: 0;
     bottom: 0;
     color: #ffffff;
+    padding: 10px 40px;
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+}
+footer span {
+    margin: 0 20px;
 }
 
 @media (max-width: 550px) {
@@ -411,6 +463,11 @@ footer {
 .pop-app .date-start,
 .pop-app .date-end {
     display: inline-block !important;
+}
+
+.event_list a {
+    color: #6d70f2;
+    font-weight: 500;
 }
 
 
