@@ -17,6 +17,7 @@ $verse = '1.5.1.1';
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.5.1.min.js') }}" defer></script>
     <script src="{{ asset('js/coda.js') }}?{{$verse}}" defer></script>
+    <script src="{{ asset('js/master.js') }}?{{$verse}}" defer></script>
     <script src="{{ asset('js/fb_sdk.js') }}" defer></script>
 
     <!-- Fonts -->

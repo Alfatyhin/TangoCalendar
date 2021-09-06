@@ -23,7 +23,7 @@
     </div>
 
 <h1>
-    Tango Calendar.
+    Tango Calendar
 </h1>
 
 <div class="calendar_list">
