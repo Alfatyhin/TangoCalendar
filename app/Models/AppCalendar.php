@@ -50,12 +50,12 @@ class AppCalendar
                 }
             }
 
-            // полулаем будущие фестивали в мире
+            // получаем будущие фестивали в мире
             if ($type_events == 'festivals' && $item->country == 'All' ) {
 
                 $dateStart = new \DateTime();
 
-                $timeMin = $dateStart->format('Y-m') . '-01T00:00:00-00:00';
+                $timeMin = $dateStart->format('Y-m-d') . 'T00:00:00-00:00';
                 $timeMax = $dateStart->modify('+11 month')->format('Y-m-t') . 'T23:59:00-00:00';
 
                 $events = $this->getCalendarEvents($gcalendarId, $timeMin, $timeMax, 5);
